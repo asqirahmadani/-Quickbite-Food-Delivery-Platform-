@@ -1,16 +1,58 @@
-```markdown
-# QuickBite API Gateway - Orchestrator Pattern
+# **QuickBite API Gateway - Orchestrator Pattern**
 
 A comprehensive API Gateway implementing business process orchestration for the QuickBite food delivery platform.
 
-## 🏗️ Architecture
+## **🏗️ Architecture**
 
 This gateway implements the **Orchestrator Pattern** where complex business workflows are managed centrally, coordinating calls to multiple microservices to complete end-to-end processes.
 
-### Key Orchestrated Flows
+## **🛠️ Technology Stack**
 
-#### 1. Order Creation Flow
-```
+### **Core Framework & Runtime**
+- **Bun** - High-Performance JavaScript runtime and package manager
+- **Elysia** - Fast and type-safe web framework for Bun
+- **TypeScript** - Type-safe JavaScript development
+
+### **Database**
+- **PostgreSQL** - Primary relational database for structured data
+- **Drizzle/TypeORM** - Database ORM and migrations
+
+### **Message Queue**
+- **RabbitMQ** - Message broker for async service communication
+- **AMQP** - Advanced Meesage Queueing Protocol for reliable messaging
+
+### **Payment Integration**
+- **Stripe** - Payment gateway for secure transactions
+  - Payment Intents API
+  - Webhooks for payments status updates
+  - Refund and dispute handling
+- **Payment Gateway SDK** - Custom payment abstraction layer
+  
+### **Email & Notifications**
+- **Nodemailer** - Email delivery service
+- **SMTP** - Email protocol integration
+- **Email Templates** - HTML/Text email templating
+- **Push Notifications** - Web app notifications
+
+### **Authentication & Security**
+- **JWT (JSON Web Tokens)** - Stateless authentication
+- **bcrypt** - Password hashing and validation
+- **CORS** - Cross-Origin Resourcing Sharing configuration
+- **Helmet** - Security headers middleware
+- **Rate Limiting** - API abuse prevention
+
+### **Testing**
+- **Bun Test** - Unit and integration testing
+
+### **API Documentation**
+- **Swagger** - API documentation and testing interface
+- **@elysiajs/swagger** - Elysia Swagger integration
+
+
+## Key Orchestrated Flows
+
+### 1. Order Creation Flow
+```markdown
 POST /api/orders
 ├── Step 1: Create order (PENDING_PAYMENT) → order-service
 ├── Step 2: Generate payment intent → payment-service  
@@ -18,7 +60,7 @@ POST /api/orders
 └── Compensation: Cancel order if any step fails
 ```
 
-#### 2. Driver Assignment Flow  
+### 2. Driver Assignment Flow  
 ```
 POST /api/orders/{id}/accept
 ├── Step 1: Update order status → order-service
@@ -28,7 +70,7 @@ POST /api/orders/{id}/accept
 └── Compensation: Reset order status if any step fails
 ```
 
-#### 3. Review Submission Flow
+### 3. Review Submission Flow
 ```
 POST /api/reviews  
 ├── Step 1: Create review → review-service
@@ -85,12 +127,6 @@ MAX_RETRY_ATTEMPTS=3
 COMPENSATION_ENABLED=true
 ```
 
-## 📚 API Documentation
-
-Once running, visit:
-- **Swagger UI**: http://localhost:3000/docs
-- **Health Check**: http://localhost:3000/health
-
 ## 🔄 Orchestration Features
 
 ### Transaction Management
@@ -145,6 +181,13 @@ curl -X POST http://localhost:3000/api/reviews \
   }'
 ```
 
+## **📚 API Documentation**
+Once running, visit:
+
+- Swagger UI: http://localhost:3000/docs
+- Health Check: http://localhost:3000/health
+- Metrics: http://localhost:3000/metrics
+
 ## 🔧 Development
 
 ### Project Structure
@@ -173,6 +216,16 @@ services/
 bun test
 
 ```
+
+## **🔐 Security Features**
+
+- JWT-based authentication with refresh tokens
+- Role-based access control (RBAC)
+- API rate limiting per user/IP
+- Request validation with TypeScript schemas
+- Secure headers (CORS, CSP, etc.)
+- Payment data encryption
+- Audit logging for sensitive operations
 
 ## 📊 Monitoring
 
@@ -206,14 +259,6 @@ Every orchestrated request returns a `transactionId` for tracking across service
 - Configurable timeouts and retry policies  
 - Async/non-blocking architecture
 - Efficient error propagation
-
-## 🔐 Security
-
-- JWT-based authentication
-- Role-based access control (RBAC)
-- Request validation with TypeScript schemas
-- CORS configuration for web clients
-- Secure headers and logging practices
 
 ## 🤝 Contributing
 
